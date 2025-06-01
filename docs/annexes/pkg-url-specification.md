@@ -1,59 +1,64 @@
-# Package URL specification v1 (Normative)
+# パッケージURL仕様 v1 (規格)
 
-## Introduction
+## はじめに
 
-The Package URL core specification defines a versioned and formalized
-format, syntax, and rules used to represent and validate package URLs.
+パッケージURL基本仕様は、パッケージURLの表記や検証に用いられる
+バージョン管理され、形式化された
+フォーマット、シンタックス、ルールを定義する。
 
-A package URL or _purl_ is an attempt to standardize existing approaches
-to reliably identify the location of software packages.
+パッケージURL、あるいは　_purl_ は
+ソフトウェアパッケージの所在を確実に特定するために
+現在実施されている手法の標準化を目指すものである。
 
-A _purl_ is a URL string used to identify the location of a
-software package in a mostly universal and uniform way across
-programming languages, package managers, packaging conventions, tools,
-APIs and databases.
+_purl_ は
+プログラミング言語、パッケージマネージャー、パッケージの慣例、ツール、API、データベースにおいて
+最も全世界的に統一された方法を用いて
+ソフトウェアパッケージの所在を特定する
+URL文字列である。
 
-Such a package URL is useful to reliably reference the same software
-package using a simple and expressive syntax and conventions based on
-familiar URLs.
+このようなパッケージURLは
+ウェブアクセスで用いられるURLをもとにした簡潔な表現力のあるシンタックスと用例を用いており、
+あるソフトウェアパッケージを正確に参照する際に有効である。
 
-## Syntax definition
+## シンタックス定義
 
-_purl_ stands for **package URL**.
+_purl_ は **パッケージURL (package URL)** の略語である。
 
-A _purl_ is a URL composed of seven components:
+_purl_ は7つの要素からなる：
 
     scheme:type/namespace/name@version?qualifiers#subpath
 
-Components are separated by a specific character for unambiguous parsing.
+各要素は
+明瞭な構文解析のために特定の文字によって
+分離されている。
 
-The definition for each components is:
+各要素の定義は次の通り：
 
-- **scheme**: this is the URL scheme with the constant value of "`pkg`". One of the primary reason for this single scheme is to facilitate the future official registration of the "`pkg`" scheme for package URLs. Required.
-- **type**: the package type or package protocol such as maven, npm, nuget, gem, pypi, etc. Required.
-- **namespace**: some name prefix such as a Maven groupid, a Docker image owner, a GitHub user or organization. Optional and type-specific.
-- **name**: the name of the package. Required.
-- **version**: the version of the package. Optional.
-- **qualifiers**: extra qualifying data for a package such as an OS, architecture, a distribution, etc. Optional and type-specific.
-- **subpath**: extra subpath within a package, relative to the package root. Optional.
+- **scheme（形式）**: URL形式を示すものであり、常に"`pkg`"とする。 単一の形式とする主な理由は、将来の"`pkg`"形式の公式登録を容易にするためである。必須要素。
+- **type（タイプ）**: maven, npm, nuget, gem, pypiといったパッケージタイプあるいはパッケージプロトコル。必須要素。
+- **namespace（ネームスペース）**: MarvenグループID、Dockerイメージの所有者、GitHubユーザーや組織といった名称に付けるプレフィックス。オプション要素、かつ、タイプ依存あり。
+- **name（名称）**: パッケージの名称。必須要素。
+- **version（バージョン）**: パッケージのバージョン。オプション要素。
+- **qualifiers（付加情報）**: OS、アーキテクチャー、ディストリビューターなどのパッケージの付加情報。オプション要素、かつ、タイプ依存あり。
+- **subpath（サブパス）**: パッケージルートからの相対サブパス。オプション要素。
 
-Components are designed such that they form a hierarchy from the most
-significant on the left to the least significant components on the right.
+要素は階層構造をなしており、
+最も重要な要素が左にあり、最も重要でない要素が右に配置されるようになっている。
 
-A _purl_ is a valid URL and URI that conforms to the URL definitions
-and specifications in RFC 3986 <https://datatracker.ietf.org/doc/rfc3986>.
+_purl_ は、RFC 3986 <https://datatracker.ietf.org/doc/rfc3986>のURLの定義と仕様に準拠した
+有効なURLやURIとなっている。
 
-A _purl_ must not contain a URL Authority i.e. there is no
-support for username, password, host and port components.
-A `namespace` segment may sometimes look like a host
-but its interpretation is specific to a type.
+_purl_ は、
+ユーザー名、パスワード、ホストやポート要素といった
+URLオーソリティ（？）を含んではならない。
+`namespace`はホストのように見える時があるが、それはタイプ特有の意味を持つ。
 
-The _purl_ components are mapped to the following URL components:
+_purl_の各要素は次のURL要素と対応する：
 
-- _purl_ scheme: this is a URL scheme with a constant value: `pkg`
-- _purl_ type, namespace, name and version components: these are collectively mapped to a URL path
-- _purl_ qualifiers: this maps to a URL query
-- _purl_ subpath: this is a URL fragment
+- _purl_ scheme: URL形式を示し、`pkg`に固定
+- _purl_ type, namespace, name and version: これらを集めたものがURLパスに対応する
+- _purl_ qualifiers: URLクエリに対応
+- _purl_ subpath: URL fragmentに対応
 
 ## Character encoding
 
