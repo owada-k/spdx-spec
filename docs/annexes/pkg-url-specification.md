@@ -51,7 +51,7 @@ _purl_ は、RFC 3986 <https://datatracker.ietf.org/doc/rfc3986>のURLの定義�
 _purl_ は、
 ユーザー名、パスワード、ホストやポート要素といった
 URLオーソリティ（？）を含んではならない。
-`namespace`はホストのように見える時があるが、それはタイプ特有の意味を持つ。
+`namespace`の一部がホストのように見える場合があるが、それはタイプ特有の意味を持つ。
 
 _purl_の各要素は次のURL要素と対応する：
 
@@ -60,40 +60,39 @@ _purl_の各要素は次のURL要素と対応する：
 - _purl_ qualifiers: URLクエリに対応
 - _purl_ subpath: URL fragmentに対応
 
-## Character encoding
+## 文字符号化
 
-For clarity and simplicity a _purl_ is always an ASCII string.
-To ensure that there is no ambiguity when parsing a _purl_,
-separator characters and non-ASCII characters must be encoded in UTF-8,
-and then percent-encoded as defined in RFC 3986 <https://datatracker.ietf.org/doc/rfc3986>.
+明瞭で簡潔にするため、_purl_ はASCII文字列となっている。
+_purl_ を解析する際のあいまいさをなくすため、
+要素間の分離文字（separator characters）とASCIIコードでない文字はUTF-8符号化されなくてはならない。
+さらに、RFC 3986 <https://datatracker.ietf.org/doc/rfc3986>の定義に従って、パーセント符号化されなくてはならない。
 
-Use these rules for percent-encoding and decoding _purl_ components:
+_purl_ の各要素のパーセント符号化/復号化には次のルールが用いられる：
 
-- the type must NOT be encoded and must NOT contain separators
-- the `#`, `?`, `@` and `:` characters must NOT be encoded when used as separators. They may need to be encoded elsewhere
-- the `:` scheme and type separator does not need to and must NOT be encoded. It is unambiguous unencoded everywhere
-- the `/` used as type/namespace/name and subpath segments separator does not need to and must NOT be percent-encoded. It is unambiguous unencoded everywhere
-- the `@` version separator must be encoded as `%40` elsewhere
-- the `?` qualifiers separator must be encoded as `%3F` elsewhere
-- the `=` qualifiers key/value separator must NOT be encoded
-- the `#` subpath separator must be encoded as `%23` elsewhere
-- All non-ASCII characters must be encoded as UTF-8 and then percent-encoded
+- typeはパーセント符号化されてはならない。また、分離文字を含んではならない。
+- `#`, `?`, `@`, `:` は分離文字として使われている場合は、パーセント符号化されてはならない。それ以外ではパーセント符号化が必要かもしれない。
+- scheme と type の分離文字である`:` はパーセント符号化は不要であり、パーセント符号化されてはならない。どの箇所にあってもパーセント符号化されない状態で明瞭である。
+- type、namespace、nameやsubpathの部分の分離文字である`/` はパーセント符号化は不要であり、パーセント符号化されてはならない。どの箇所にあってもパーセント符号化されない状態で明瞭である。
+- versionの分離文字である`@` は、常に`%40`にパーセント符号化されなくてはならない。
+- qualifiersの分離文字である`?` は、常に`%3F`にパーセント符号化されなくてはならない。
+- qualifiersのkey/valueの分離文字である`=` はパーセント符号化されてはならない。
+- subpathの分離文字である`#` は常に`%23`にパーセント符号化されなくてはならない。
+- ASCII文字ではないすべての文字は、UTF-8符号化され、パーセント符号化されなくてはならない。
 
-It is OK to percent-encode any _purl_ components, except for the type.
-Producers and consumers of _purl_ data
-must always percent-decode and percent-encode
-components and component segments
-as explained in the "How to produce and consume _purl_ data" section.
+typeを除き、どの_purl_ の要素もパーセント符号化されてよい。
+_purl_ データの作成者と利用者は
+"_purl_ データの生成と利用方法"の章に説明されているように
+常にパーセント復号化と符号化を行わなくてはならない。
 
-## Rules for each component
+## 各要素のルール
 
-A _purl_ string is an ASCII URL string composed of seven components.
+_purl_ 文字列は7つの要素からなるASCII URL文字列である。
 
-Some components are allowed to use other characters beyond ASCII: these
-components must then be UTF-8-encoded strings and percent-encoded as
-defined in the "Character encoding" section.
+要素の種類によっては、ASCII文字以外を用いることが許される：
+その場合、これらの要素は、"文字符号化"の章の定めに従って、
+UTF-8符号化され、パーセント符号化されなくてはならない。
 
-The rules for each component are:
+各要素のルールは次の通り：
 
 ### Rules for scheme
 
@@ -221,7 +220,7 @@ The following keys are valid for use in all package types:
   Each item in the list is in form of algorithm:hex\_value (all lowercase),
   such as `sha1:ad9503c3e994a4f611a4892f2e67ac82df727086`.
 
-## How to produce and consume _purl_ data
+## _purl_ データの生成と利用方法
 
 The following provides rules to be followed
 when building or deconstructing _purl_ instances.
